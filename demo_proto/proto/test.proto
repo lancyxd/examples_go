@@ -1,0 +1,24 @@
+syntax = "proto2"; //指定协议版本
+package test;  //指定包名
+
+enum PhoneType{
+    HOME=0;
+    WORK=1;
+}
+
+
+message Phone{
+ optional   PhoneType type =1;
+ optional   string number=2;
+}
+
+
+message Person{
+  optional  int32 id=1;
+  optional  string name=2;
+  repeated  Phone phones=3; //可以有多个手机
+}
+
+message ContactBook {
+    repeated Person persons=1;
+}
