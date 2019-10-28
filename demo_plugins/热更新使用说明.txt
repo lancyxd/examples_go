@@ -1,0 +1,29 @@
+plugins 热更新使用说明
+1.编译
+go build -buildmode=plugin -o aplugin.so aplugin.go  //构建指定文件插件aplugin.go到aplugin.so
+go build -ldflags "-pluginpath=plugin/hot-$(date +%s)"  -buildmode=plugin -o aplugin.so aplugin.go
+
+go build -buildmode=plugin -o print.so exd.go
+go build -ldflags "-pluginpath=plugin/hot-$(date +%s)" -buildmode=plugin -o ../../plugins/mip2.0_v1.so mip2.0.go
+//为了避免插件冲突， 最好是在编译的时候指定pluginpath;
+
+2.使用方法
+p, _ := plugin.Open("./aplugin.so")//加载
+
+//调用,使用
+add, _ := p.Lookup("Add")
+addRes := add.(func(int, int) int)(11, 2)
+fmt.Printf("addRes=%d\n", addRes)
+
+3.应用的部署和更新
+编译好的应用二进制文件、配置文件上传到服务器上；
+应用服务器能感知到有新的版本上传；
+在没有停止服务的情况下，热更新版本；
+最好所有的更新过程，可以脚本化，减少手动操作的错误。
+
+
+只改变business中业务的代码，不改变其它代码，只需重新编译热更新文件即可。其它无需修改。
+
+
+
+

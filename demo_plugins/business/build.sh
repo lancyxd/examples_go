@@ -1,0 +1,1 @@
+go build -ldflags "-pluginpath=plugin/hot-$(date +%s)" -buildmode=plugin -o ../plugins/aplugin.so aplugin.go
