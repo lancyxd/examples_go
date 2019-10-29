@@ -1,0 +1,39 @@
+一 pprof性能分析 
+参考链接： https://www.jianshu.com/p/4e4ff6be6af9
+1 介绍(模式：报告生成；交互终端使用；界面)
+pprof是用于可视化和分析性能分析数据的工具;
+pprof 以 profile.proto 读取分析样本的集合，并生成报告以可视化并帮助分析数据（支持文本和图形报告）;
+
+2 功能
+CPU Profiling：CPU 分析，按照一定的频率采集所监听的应用程序 CPU（含寄存器）的使用情况，可确定应用程序在主动消耗 CPU 周期时花费时间的位置
+Memory Profiling：内存分析，在应用程序进行堆分配时记录堆栈跟踪，用于监视当前和历史内存使用情况，以及检查内存泄漏;
+Block Profiling：阻塞分析，记录 goroutine 阻塞等待同步（包括定时器通道）的位置;
+Mutex Profiling：互斥锁分析，报告互斥锁的竞争情况;
+1)runtime/pprof：采集程序（非 Server）的运行数据进行分析
+2)_ "net/http/pprof" ：web服务或者采集 HTTP Server 的运行时数据进行分析
+
+3 程序编写与编译  go build *.go
+4 用法
+1)web界面(浏览器):http://localhost:port/debug/pprof/
+2)交互式终端
+go tool pprof http://localhost:6060/debug/pprof/profile?seconds=3				(pprof) top10
+go tool pprof http://localhost:6060/debug/pprof/heap
+go tool pprof http://localhost:6060/debug/pprof/block
+go tool pprof http://localhost:6060/debug/pprof/mutex
+3)*.prof文件分析
+终端输入go tool pprof -http=127.0.0.1:8082 cpu.prof;web访问:http://127.0.0.1:8082/
+go tool pprof cpu.prof;   (pprof) web  (Top,Graph,Peek,Source)
+
+
+二 生成火焰图工具
+1 安装 FlameGraph脚本和go-torch
+github.com/brendangregg/FlameGraph			cp flamegraph.pl /usr/local/bin;检测是否安装成功 flamegraph.pl -h
+github.com/uber/go-torch
+2)使用(前提是serve必须运行，8082端口运行)
+go-torch -u http://127.0.0.1:8082  --seconds 60 -f cpu.svg   会在当前目录下生成cpu.svg文件，使用浏览器打开cpu.svg
+go-torch  http://127.0.0.1:8082/debug/pprof/heap --colors mem  -f mem.svg
+3)火焰图分析
+
+
+
+
