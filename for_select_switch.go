@@ -60,7 +60,7 @@ func forSelectContinue(i int) {
 			i++
 			if i == 2 {
 				fmt.Println("forSelectContinue continue now")
-				break
+				continue
 			}
 			fmt.Println("forSelectContinue inside the select:")
 		}
