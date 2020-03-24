@@ -2,6 +2,7 @@ package examples_go
 
 import (
 	"runtime"
+	"strconv"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -91,4 +92,18 @@ func AddConcurrent(goroutines int, nums []int) int {
 	}
 	wg.Wait()
 	return int(v)
+}
+
+//性能测试
+func BenchmarkItoaStrconv(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		result = strconv.Itoa(n)
+	}
+}
+
+func BenchmarkItoaFmt(b *testing.T) {
+	for n := 0; n < b.N; n++ {
+		result = strconv.Itoa(n)
+	}
+
 }
