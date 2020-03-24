@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	_ "net/http/pprof"
+	"time"
 )
 
 /*
@@ -16,6 +17,7 @@ func main() {
 	go func() {
 		for {
 			log.Println(Add("https://github.com/EDDYCJY"))
+			time.Sleep(30 * time.Second)
 		}
 	}()
 
